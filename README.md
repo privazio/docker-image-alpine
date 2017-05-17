@@ -1,8 +1,6 @@
 Alpine Linux PGP-Verified Docker Image
 --------------------------------------
 
-
-
 Building the image
 ------------------
 
@@ -22,6 +20,8 @@ This makefile will:
 Outside of the scope:
 
 - Verify the integrity of the image once pulled from the repository.
+
+This image is meant to be pushed to your private image repository. 
 
 Tested Platforms
 ----------------

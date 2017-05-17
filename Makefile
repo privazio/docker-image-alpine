@@ -1,5 +1,4 @@
 GPG=gpg
-KEY=ncopa
 CURL=curl
 DOCKER=docker
 
@@ -11,7 +10,7 @@ MIRROR=${shell cat MIRROR}
 PKG=alpine-minirootfs-${VERSION}-${ARCH}.tar.gz
 PKGURL=https://${MIRROR}/alpine/v${VERSION_NP}/releases/${ARCH}/${PKG}
 
-GPG_OPS=--no-default-keyring --trust-model always --keyring ./${KEY}.gpg
+GPG_OPS=--no-default-keyring --trust-model always --keyring ./publishers.gpg
 
 TAGS= -t alpine-${ARCH}:${VERSION} -t alpine-${ARCH}:${VERSION_NP} -t alpine-${ARCH}:latest
 
@@ -23,10 +22,10 @@ rootfs.tgz:
 rootfs.tgz.asc:
 	${CURL} ${PKGURL}.asc > rootfs.tgz.asc
 
-%.gpg: %.asc
-	${GPG} --no-default-keyring --keyring ./$@ --import $<
+publishers.gpg: 
+	${GPG} --no-default-keyring --keyring ./$@ --import publishers-gpg-keys/*.asc 
 
-build: rootfs.tgz rootfs.tgz.asc ${KEY}.gpg
+build: rootfs.tgz rootfs.tgz.asc publishers.gpg
 	${GPG} ${GPG_OPS} --verify rootfs.tgz.asc rootfs.tgz && ${DOCKER} build . ${TAGS}
 
 clean:
