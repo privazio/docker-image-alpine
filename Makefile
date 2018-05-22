@@ -4,7 +4,7 @@ DOCKER=$(shell which docker)
 ARI=$(shell which alpine_release_info)
 REPO=
 
-ARCH=$(shell uname -m)
+ARCH?=$(shell uname -m)
 BRANCH=latest-stable
 ARI_OPS=--branch ${BRANCH} --arch ${ARCH} --flavor alpine-minirootfs
 
